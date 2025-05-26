@@ -8,14 +8,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Metropolis-Hastings Sampling for 3D Gaussian Reconstruction</title>
     <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-S35CLSPTXS"></script>
+    <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-S35CLSPTXS"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
 
         gtag('config', 'G-S35CLSPTXS');
-    </script>
+    </script> -->
 
     <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
 
@@ -45,6 +45,8 @@
         }
     </style>
 
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script defer src="./static/js/fontawesome.all.min.js"></script>
     <script src="./static/js/bulma-carousel.min.js"></script>
@@ -156,17 +158,23 @@
             <div class="columns is-centered has-text-centered">
                 <div class="column is-four-fifths">
                     <h2 class="title is-3">Method</h2>
-                    <div class="content has-text-centered">
+                    <!-- <div class="content has-text-centered">
                         <img src="./static/images/algorithm1.png" width="80%">
-                    </div>
+                    </div> -->
                     <div class="content has-text-justified">
 
 
                         <p>
-                            Our framework starts with a fundamental redesign of the densification process in 3D Gaussian Splatting (3DGS). Instead of relying on heuristic-based rules for adding or removing Gaussians, we reformulate these operations as a principled Metropolis-Hastings (MH) sampling process. This allows our method to adaptively determine the optimal number and placement of Gaussians without requiring prior knowledge of scene complexity. The core idea is to leverage comprehensive multi-view error signals—specifically aggregated L1, SSIM, and opacity information across different viewpoints—to identify regions of high visual or geometric importance where new Gaussians should be proposed.
+                            Our framework reframes 3D Gaussian Splatting (3DGS) densification using a principled Metropolis-Hastings (MH) sampling process. We aim to draw Gaussian configurations \(\Theta\) from a target distribution proportional to \(e^{-\mathcal{E}(\Theta)}\), where the core is our energy function:
+                            \[\mathcal{E}(\Theta) = \mathcal{L}(\Theta) + \lambda_v \sum_{v \in \mathcal{V}} \ln (1 + c_\Theta(v))\]
+                            This strategically balances the reconstruction loss \(\mathcal{L}(\Theta)\) with a novel logarithmic sparsity prior (the second term). This prior, with \(c_\Theta(v)\) as the Gaussian count in voxel \(v\), penalizes overcrowding, promoting an efficient scene representation.
                         </p>
                         <p>
-                            These candidate Gaussians are generated using a coarse-to-fine proposal strategy. Each proposed Gaussian is then subjected to a rigorously derived Bayesian acceptance test, a key part of our MH framework. This test probabilistically decides whether to accept the candidate by weighing its potential to reduce reconstruction error (using a lightweight photometric surrogate) against a voxel-based sparsity prior that penalizes redundancy. This process, which also includes a mechanism for relocating under-contributing Gaussians, enables our system to converge faster towards a well-balanced and efficient Gaussian distribution that accurately represents the scene with fewer Gaussians while matching or exceeding the quality of existing methods.
+                            To guide new Gaussian proposals, we compute a multi-view importance score \(s(p)\):
+                            \[s(p) = \sigma(\alpha O(p) + \beta \mathrm{SSIM}_{\mathrm{agg}}(p) + \gamma \mathrm{L1}_{\mathrm{agg}}(p))\]
+                            This score fuses opacity and photometric errors (L1, SSIM) to highlight regions needing refinement. Each proposed Gaussian \(i\) (targeting voxel \(v'\)) is then accepted via a specialized probability \(\rho(i)\), our 'logistic-voxel product' derived from MH principles:
+                            \[\rho(i) = \sigma(I(i)) \cdot \frac{1}{1+\lambda_v c_\Theta(v')}\]
+                            Here, \(I(i)\) (derived from \(s(p)\)) acts as a lightweight surrogate for photometric gain, while the second term is the density factor directly incorporating our sparsity prior. This probabilistic mechanism, balancing fidelity against compactness, allows faster convergence and yields a high-quality Gaussian representation.
                         </p>
 
                     </div>
@@ -375,161 +383,90 @@
         // });
 
     </script>
-
-    <!-- <section class="hero">
-        <div class="hero-body">
-            <div class="container is-max-desktop content has-text-centered">
-            <hr>
-                <h2 class="title is-3">Results - Sampling Comparisons</h2>
-            </div>
-
-            <div class="container">
-                <div class=" has-text-centered">
-                    <div class="columns is-centered">
-                        <div class="column">
-                            <div class="content">
-                                <div class="columns is-centered">
-                                    <div class="column is-full-width">
-                                        <div id="sampling1" class="bal-container-small">
-
-                                            <div class="bal-after">
-                                                <video autoplay muted loop playsinline style="width: 100%; height: auto;">
-                                                    <source src="./static/videos/drjohnson_sampling_mcmc.mp4" type="video/mp4">
-                                                    Your browser does not support the video tag.
-                                                </video>
-                                                <div class="bal-afterPosition afterLabel" style="z-index:1;">
-                                                    3DGS-MCMC [Kheradmand et al. 2024]
-                                                </div>
-                                            </div>
-
-                                            <div class="bal-before" style="width:96.4968152866242%;">
-                                                <div class="bal-before-inset" style="width: 539px;">
-                                                    <video autoplay muted loop playsinline style="width: 100%; height: auto;">
-                                                        <source src="./static/videos/drjohnson_sampling.mp4" type="video/mp4">
-                                                        Your browser does not support the video tag.
-                                                    </video>
-                                                    <div class="bal-beforePosition beforeLabel">
-                                                        MH-3DGS (Ours)
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="bal-handle" style="left:96.4968152866242%;">
-                                                <span class=" handle-left-arrow"></span>
-                                                <span class="handle-right-arrow"></span>
-                                            </div>
-
-                                        </div>
-
-
-                                        <div id="sampling2" class="bal-container-small">
-
-                                            <div class="bal-after">
-                                                <video autoplay muted loop playsinline style="width: 100%; height: auto;">
-                                                    <source src="./static/videos/flowers_sampling_mcmc.mp4" type="video/mp4">
-                                                    Your browser does not support the video tag.
-                                                </video>
-                                                <div class="bal-afterPosition afterLabel" style="z-index:1;">
-                                                    3DGS-MCMC [Kheradmand et al. 2024]
-                                                </div>
-                                            </div>
-
-                                            <div class="bal-before" style="width:96.4968152866242%;">
-                                                <div class="bal-before-inset" style="width: 539px;">
-                                                <video autoplay muted loop playsinline style="width: 100%; height: auto;">
-                                                    <source src="./static/videos/flowers_sampling.mp4" type="video/mp4">
-                                                    Your browser does not support the video tag.
-                                                </video>
-                                                    <div class="bal-beforePosition beforeLabel">
-                                                        MH-3DGS (Ours)
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="bal-handle" style="left: 50%;">
-                                                <span class=" handle-left-arrow"></span>
-                                                <span class="handle-right-arrow"></span>
-                                            </div>
-
-                                        </div>
-
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="column">
-                            <div class="columns is-centered">
-                                <div class="column content">
-
-                                    <div id="sampling3" class="bal-container-small">
-                                        <div class="bal-after">
-                                            <video autoplay muted loop playsinline style="width: 100%; height: auto;">
-                                                <source src="./static/videos/room_sampling_mcmc.mp4" type="video/mp4">
-                                                Your browser does not support the video tag.
-                                            </video>
-                                            <div class="bal-afterPosition afterLabel" style="z-index:1;">
-                                                3DGS-MCMC [Kheradmand et al. 2024]
-                                            </div>
-                                        </div>
-
-                                        <div class="bal-before" style="width:96.4968152866242%;">
-                                            <div class="bal-before-inset" style="width: 539px;">
-                                                <video autoplay muted loop playsinline style="width: 100%; height: auto;">
-                                                    <source src="./static/videos/room_sampling.mp4" type="video/mp4">
-                                                    Your browser does not support the video tag.
-                                                </video>
-                                                <div class="bal-beforePosition beforeLabel">
-                                                    MH-3DGS (Ours)
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="bal-handle" style="left:62.10191082802548%;">
-                                            <span class=" handle-left-arrow"></span>
-                                            <span class="handle-right-arrow"></span>
-                                        </div>
-
-                                    </div>
-
-                                    <div id="sampling4" class="bal-container-small">
-                                        <div class="bal-after">
-                                            <video autoplay muted loop playsinline style="width: 100%; height: auto;">
-                                                <source src="./static/videos/trehill_sampling_mcmc.mp4" type="video/mp4">
-                                                    Your browser does not support the video tag.
-                                            </video>
-                                            <div class="bal-afterPosition afterLabel" style="z-index:1;">
-                                                3DGS-MCMC [Kheradmand et al. 2024]
-                                            </div>
-                                        </div>
-
-                                        <div class="bal-before" style="width:96.4968152866242%;">
-                                            <div class="bal-before-inset" style="width: 539px;">
-                                                <video autoplay muted loop playsinline style="width: 100%; height: auto;">
-                                                    <source src="./static/videos/treehill_sampling.mp4" type="video/mp4">
-                                                    Your browser does not support the video tag.
-                                                </video>
-                                                <div class="bal-beforePosition beforeLabel">
-                                                    MH-3DGS (Ours)
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="bal-handle" style="left:56.77179962894249%;">
-                                            <span class=" handle-left-arrow"></span>
-                                            <span class="handle-right-arrow"></span>
-                                        </div>
-
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section> -->
     <!-- ── Results – Sampling Comparisons ── -->
+  <section class="hero">
+    <div class="hero-body">
+      <div class="container has-text-centered">
+        <hr>
+      <h2 class="title is-3">Results - Sampling Comparisons</h2>
+        <div id="results-carousel" class=" carousel results-carousel">
+          <div class="item item-drjohnson">
+            <video poster="" id="drjohnsonsample" autoplay controls muted loop playsinline height="100%">
+              <source src="./static/videos/drjohnson_sampling_combined.mp4"
+                      type="video/mp4">
+            </video>
+          </div>
+  
+          <div class="item item-room">
+            <video poster="" id="roomsample" autoplay controls muted loop playsinline height="100%">
+              <source src="./static/videos/room_sampling_combined.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="item item-flowers">
+            <video poster="" id="flowerssample" autoplay controls muted loop playsinline height="100%">
+              <source src="./static/videos/flowers_sampling_combined.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="item item-treehill">
+            <video poster="" id="treehillsample" autoplay controls muted loop playsinline height="100%">
+              <source src="./static/videos/treehill_sampling_combined.mp4" type="video/mp4">
+            </video>
+          </div>
+        <div class="item item-bicycle">
+          <video poster="" id="bicyclesample" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/bicycle_sampling_combined.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+    <section class="hero">
+    <div class="hero-body">
+      <div class="container has-text-centered">
+        <hr>
+      <h2 class="title is-3">Results - Importance Map to Sampling</h2>
+        <div id="results-carousel" class=" carousel results-carousel">
+          <div class="item item-room">
+            <video poster="" id="drjohnson_imp_sampling" autoplay controls muted loop playsinline height="100%">
+              <source src="./static/videos/drjohnson_imp_sampling.mp4"
+                      type="video/mp4">
+            </video>
+          </div>
+  
+          <div class="item item-room">
+            <video poster="" id="room_imp_sampling" autoplay controls muted loop playsinline height="100%">
+              <source src="./static/videos/room_imp_sampling.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="item item-bicycle">
+            <video poster="" id="train_imp_sampling" autoplay controls muted loop playsinline height="100%">
+              <source src="./static/videos/train_imp_sampling.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="item item-treehill">
+            <video poster="" id="treehill_imp_sampling" autoplay controls muted loop playsinline height="100%">
+              <source src="./static/videos/treehill_imp_sampling.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="item item-truck">
+            <video poster="" id="truck_imp_sampling" autoplay controls muted loop playsinline height="100%">
+              <source src="./static/videos/truck_imp_sampling.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="item item-counter">
+            <video poster="" id="counter_imp_sampling" autoplay controls muted loop playsinline height="100%">
+              <source src="./static/videos/counter_imp_sampling.mp4" type="video/mp4">
+            </video>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+<!-- 
 <section class="hero">
   <div class="hero-body">
     <div class="container is-max-desktop content has-text-centered">
@@ -537,10 +474,8 @@
       <h2 class="title is-3">Results - Sampling Comparisons</h2>
     </div>
     <div class="container">
-      <!-- wrap on mobile, side-by-side on tablet+ -->
       <div class="columns is-centered is-multiline is-mobile">
 
-        <!-- first half: sampling1 & sampling2 -->
         <div class="column is-half-tablet is-full-mobile">
           
           <div id="sampling1" class="bal-container-small">
@@ -585,7 +520,6 @@
 
         </div>
 
-        <!-- second half: sampling3 & sampling4 -->
         <div class="column is-half-tablet is-full-mobile">
           
           <div id="sampling3" class="bal-container-small">
@@ -655,7 +589,7 @@
         //     id: '#example6'
         // });
 
-    </script>
+    </script> -->
 
 
 
@@ -685,7 +619,7 @@
                             We thank the authors of <a rel="nerfies"
                                 href="https://github.com/nerfies/nerfies.github.io/tree/main">Nerfies</a> and <a
                                 rel="refnerf"
-                                href="https://pup3dgs.github.io/">PUP 3D-GS</a>
+                                href="https://lightgaussian.github.io/">LightGaussian</a>
                             for generously open-sourcing the templates used in this website.
                         </p>
                     </div>
