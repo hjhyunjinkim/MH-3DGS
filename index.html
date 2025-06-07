@@ -3,8 +3,8 @@
 
 <head>
     <meta charset="utf-8">
-    <!-- <meta name="keywords"
-        content="MH-3DGS, mh-3dgs, MH3DGS, mh3dgs, MH-3DGS, Gaussian Splatting, Gaussian, 3D Gaussian Splatting, 3DGS"> -->
+    <meta name="keywords"
+        content="MH-3DGS, mh-3dgs, MH3DGS, mh3dgs, MH-3DGS, Gaussian Splatting, Gaussian, 3D Gaussian Splatting, 3DGS">
     <meta name="description"
         content="We introduce a reformulation of 3D Gaussian Splatting (3DGS) as a Metropolis-Hastings sampling process, replacing its heuristic-based densification with a probabilistic, adaptive mechanism.">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -385,47 +385,56 @@
         // });
 
     </script>
+
+  <section class="hero">
+    <div class="hero-body">
+      <div class="container has-text-centered">
+        <hr>
+      <h2 class="title is-3">Results - Importance Map to Sampling</h2>
+  <div class="w3-center">
+    <!-- <h2>Videos</h2> -->
+    <div style="width: 40.65%; display: inline-block;">
+      <video controls style="width:100%" autoplay loop playsinline muted>
+        <source src="./static/videos/importance_room_vertical.mp4" type="video/mp4">
+        Sorry, your browser doesn't support embedded videos.
+      </video>
+    </div>
+    <div style="width: 41.8%; display: inline-block; margin-left:1%;">
+      <video controls style="width:100%" autoplay loop playsinline muted>
+        <source src="./static/videos/importance_garden_vertical.mp4" type="video/mp4">
+        Sorry, your browser doesn't support embedded videos.
+      </video>
+    </div>
+  </div>
+  </div>
+  </div>
+  </section>
     <!-- ── Results – Sampling Comparisons ── -->
   <section class="hero">
     <div class="hero-body">
       <div class="container has-text-centered">
         <hr>
       <h2 class="title is-3">Results - Sampling Comparisons</h2>
-        <div id="results-carousel" class=" carousel results-carousel">
-          <div class="item item-drjohnson">
-            <video poster="" id="drjohnsonsample" autoplay controls muted loop playsinline height="100%">
-              <source src="./static/videos/drjohnson_sampling_combined.mp4"
-                      type="video/mp4">
-            </video>
-          </div>
-  
-          <div class="item item-room">
-            <video poster="" id="roomsample" autoplay controls muted loop playsinline height="100%">
-              <source src="./static/videos/room_sampling_combined.mp4" type="video/mp4">
-            </video>
-          </div>
-          <div class="item item-flowers">
-            <video poster="" id="flowerssample" autoplay controls muted loop playsinline height="100%">
-              <source src="./static/videos/flowers_sampling_combined.mp4" type="video/mp4">
-            </video>
-          </div>
-          <div class="item item-treehill">
-            <video poster="" id="treehillsample" autoplay controls muted loop playsinline height="100%">
-              <source src="./static/videos/treehill_sampling_combined.mp4" type="video/mp4">
-            </video>
-          </div>
-        <div class="item item-bicycle">
-          <video poster="" id="bicyclesample" autoplay controls muted loop playsinline height="100%">
-            <source src="./static/videos/bicycle_sampling_combined.mp4"
-                    type="video/mp4">
-          </video>
-        </div>
-        </div>
-      </div>
+  <div class="w3-center">
+    <!-- <h2>Videos</h2> -->
+    <div style="width: 40.65%; display: inline-block;">
+      <video controls style="width:100%" autoplay loop playsinline muted>
+        <source src="./static/videos/sampling_drjohnson_vertical.mp4" type="video/mp4">
+        Sorry, your browser doesn't support embedded videos.
+      </video>
     </div>
+    <div style="width: 40.6%; display: inline-block; margin-left:1%;">
+      <video controls style="width:100%" autoplay loop playsinline muted>
+        <source src="./static/videos/sampling_flowers_vertical.mp4" type="video/mp4">
+        Sorry, your browser doesn't support embedded videos.
+      </video>
+    </div>
+  </div>
+  </div>
+  </div>
   </section>
 
-    <section class="hero">
+    <!-- <section class="hero">
     <div class="hero-body">
       <div class="container has-text-centered">
         <hr>
@@ -466,7 +475,7 @@
         </div>
       </div>
     </div>
-  </section>
+  </section> -->
 
 <!-- 
 <section class="hero">
