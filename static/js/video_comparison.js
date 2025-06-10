@@ -43,7 +43,7 @@ function playVids(videoId) {
             var arrowLength = 0.09 * vidHeight;
             var arrowheadWidth = 0.025 * vidHeight;
             var arrowheadLength = 0.04 * vidHeight;
-            var arrowPosY = vidHeight / 10;
+            var arrowPosY = vidHeight / 2;
             var arrowWidth = 0.007 * vidHeight;
             var currX = vidWidth * position;
 
