@@ -159,10 +159,10 @@ body {
 }
 
 /* SCROLLABLE area */
-#results-carousel {
+.results-carousel {
   display: flex;
   overflow-x: auto;
-  overflow-y: hidden;              /* prevent vertical scrollbars */
+  overflow-y: hidden;
   scroll-snap-type: x mandatory;
   scroll-behavior: smooth;
   margin: 0;
@@ -170,7 +170,7 @@ body {
 }
 
 /* ONE-PAGE-AT-A-TIME */
-#results-carousel .item {
+.results-carousel .item {
   flex: 0 0 100%;
   scroll-snap-align: start;
 
@@ -183,13 +183,22 @@ body {
 }
 
 /* VIDEO FILL, NO EXTRA MARGIN */
-#results-carousel .item video {
-  display: block;                  /* remove inline gaps */
+.results-carousel .item video {
+  display: block;
   width: 80%;
   height: auto;
-  object-fit: contain;             /* letterbox; use “cover” to crop */
+  object-fit: contain;
   margin: 0;
   padding: 0;
+}
+
+/* HIDE any native scrollbar */
+.results-carousel::-webkit-scrollbar {
+  display: none;
+}
+.results-carousel {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
 /* ARROWS (always visible) */
@@ -213,10 +222,6 @@ body {
 }
 .nav-arrow.left  { left: 1rem;  }
 .nav-arrow.right { right: 1rem; }
-
-/* HIDE any native scrollbar */
-#results-carousel::-webkit-scrollbar { display: none; }
-#results-carousel { -ms-overflow-style: none; scrollbar-width: none; }
 
 .interpolation-panel {
   background: #f5f5f5;
