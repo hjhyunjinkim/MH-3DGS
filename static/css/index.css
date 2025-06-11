@@ -132,14 +132,13 @@ body {
 
 .publication-body img {}
 
-.results-carousel {
+/* .results-carousel {
   overflow: hidden;
 
 }
 
 .results-carousel .item {
   margin: 5px;
-  /* overflow: hidden; */
   border: 1px solid #bbb;
   border-radius: 10px;
   padding: 0;
@@ -149,7 +148,75 @@ body {
 .results-carousel video {
   margin: 0;
   width: 100%;
+} */
+
+.carousel-wrapper {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  margin: 0 auto;
+  padding: 0;
 }
+
+/* SCROLLABLE area */
+#results-carousel {
+  display: flex;
+  overflow-x: auto;
+  overflow-y: hidden;              /* prevent vertical scrollbars */
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  margin: 0;
+  padding: 0;
+}
+
+/* ONE-PAGE-AT-A-TIME */
+#results-carousel .item {
+  flex: 0 0 100%;
+  scroll-snap-align: start;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  margin: 0;
+  padding: 0;
+}
+
+/* VIDEO FILL, NO EXTRA MARGIN */
+#results-carousel .item video {
+  display: block;                  /* remove inline gaps */
+  width: 80%;
+  height: auto;
+  object-fit: contain;             /* letterbox; use “cover” to crop */
+  margin: 0;
+  padding: 0;
+}
+
+/* ARROWS (always visible) */
+.nav-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 2.5rem;
+  height: 2.5rem;
+  background: rgba(0,0,0,0.5);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  font-size: 1.5rem;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;                      /* above everything */
+}
+.nav-arrow.left  { left: 1rem;  }
+.nav-arrow.right { right: 1rem; }
+
+/* HIDE any native scrollbar */
+#results-carousel::-webkit-scrollbar { display: none; }
+#results-carousel { -ms-overflow-style: none; scrollbar-width: none; }
 
 .interpolation-panel {
   background: #f5f5f5;

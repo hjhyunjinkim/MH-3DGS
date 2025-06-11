@@ -47,6 +47,13 @@
         }
     </style>
 
+    <script>
+        function slide(dir) {
+        const el = document.getElementById('results-carousel');
+        el.scrollBy({ left: dir * el.clientWidth, behavior: 'smooth' });
+        }
+    </script>
+
     <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -391,49 +398,136 @@
       <div class="container has-text-centered">
         <hr>
       <h2 class="title is-3">Results - Importance Map to Sampling</h2>
-  <div class="w3-center">
-    <!-- <h2>Videos</h2> -->
-    <div style="margin-bottom: 10px; width: 80%; display: inline-block;">
-      <video controls style="width:100%" autoplay loop playsinline muted>
-        <source src="./static/videos/importance_room_horizontal.mp4" type="video/mp4">
-        Sorry, your browser doesn't support embedded videos.
-      </video>
+  
+        <!-- WRAPPER holds arrows and the scrolling carousel -->
+        <div class="carousel-wrapper">
+          <!-- Left arrow stays fixed -->
+          <button class="nav-arrow left" onclick="slide(-1)">‹</button>
+  
+          <!-- Scrollable carousel -->
+          <div id="results-carousel" class="results-carousel">
+            <div class="item item-room">
+              <video poster="" id="room" autoplay controls muted loop playsinline>
+                <source src="./static/videos/importance_room_horizontal.mp4" type="video/mp4">
+              </video>
+            </div>
+            <div class="item item-garden">
+              <video poster="" id="garden" autoplay controls muted loop playsinline>
+                <source src="./static/videos/importance_garden_horizontal.mp4" type="video/mp4">
+              </video>
+            </div>
+            <!-- <div class="item item-bicycle">
+              <video poster="" id="bicycle" autoplay controls muted loop playsinline>
+                <source src="./static/videos/bicycle_video_comp3.mp4" type="video/mp4">
+              </video>
+            </div>
+            <div class="item item-bonsai">
+              <video poster="" id="bonsai" autoplay controls muted loop playsinline>
+                <source src="./static/videos/bonsai_video_comp3.mp4" type="video/mp4">
+              </video>
+            </div>
+            <div class="item item-counter">
+              <video poster="" id="counter" autoplay controls muted loop playsinline>
+                <source src="./static/videos/counter_video_comp3.mp4" type="video/mp4">
+              </video>
+            </div>
+            <div class="item item-kitchen">
+              <video poster="" id="kitchen" autoplay controls muted loop playsinline>
+                <source src="./static/videos/kitchen_video_comp3.mp4" type="video/mp4">
+              </video>
+            </div>
+            <div class="item item-train">
+              <video poster="" id="train" autoplay controls muted loop playsinline>
+                <source src="./static/videos/train_video_comp3.mp4" type="video/mp4">
+              </video>
+            </div>
+            <div class="item item-truck">
+              <video poster="" id="truck" autoplay controls muted loop playsinline>
+                <source src="./static/videos/truck_video_comp3.mp4" type="video/mp4">
+              </video>
+            </div>
+            <div class="item item-stump">
+              <video poster="" id="stump" autoplay controls muted loop playsinline>
+                <source src="./static/videos/stump_video_comp3.mp4" type="video/mp4">
+              </video>
+            </div>
+          </div>
+   -->
+          <!-- Right arrow stays fixed -->
+          <button class="nav-arrow right" onclick="slide(1)">›</button>
+        </div>
+
+      </div>
     </div>
-    <!-- <div style="width: 80%; display: inline-block;">
-      <video controls style="width:100%" autoplay loop playsinline muted>
-        <source src="./static/videos/importance_garden_horizontal.mp4" type="video/mp4">
-        Sorry, your browser doesn't support embedded videos.
-      </video>
-    </div> -->
-  </div>
-  </div>
-  </div>
   </section>
-    <!-- ── Results – Sampling Comparisons ── -->
+
   <section class="hero">
     <div class="hero-body">
       <div class="container has-text-centered">
         <hr>
       <h2 class="title is-3">Results - Sampling Comparisons</h2>
-  <div class="w3-center">
-    <!-- <h2>Videos</h2> -->
-    <div style="margin-bottom: 10px; width: 80%; display: inline-block;">
-      <video controls style="width:100%" autoplay loop playsinline muted>
-        <source src="./static/videos/sampling_drjohnson_horizontal.mp4" type="video/mp4">
-        Sorry, your browser doesn't support embedded videos.
-      </video>
-    </div>
-    <!-- <div style="width: 80%; display: inline-block;">
-      <video controls style="width:100%" autoplay loop playsinline muted>
-        <source src="./static/videos/sampling_flowers_horizontal.mp4" type="video/mp4">
-        Sorry, your browser doesn't support embedded videos.
-      </video>
-    </div> -->
-  </div>
-  </div>
-  </div>
-  </section>
+  
+        <!-- WRAPPER holds arrows and the scrolling carousel -->
+        <div class="carousel-wrapper">
+          <!-- Left arrow stays fixed -->
+          <button class="nav-arrow left" onclick="slide(-1)">‹</button>
+  
+          <!-- Scrollable carousel -->
+          <div id="results-carousel" class="results-carousel">
+            <div class="item item-room">
+              <video poster="" id="room" autoplay controls muted loop playsinline>
+                <source src="./static/videos/sampling_drjohnson_horizontal.mp4" type="video/mp4">
+              </video>
+            </div>
+            <div class="item item-garden">
+              <video poster="" id="garden" autoplay controls muted loop playsinline>
+                <source src="./static/videos/sampling_flowers_horizontal.mp4" type="video/mp4">
+              </video>
+            </div>
+            <!-- <div class="item item-bicycle">
+              <video poster="" id="bicycle" autoplay controls muted loop playsinline>
+                <source src="./static/videos/bicycle_video_comp3.mp4" type="video/mp4">
+              </video>
+            </div>
+            <div class="item item-bonsai">
+              <video poster="" id="bonsai" autoplay controls muted loop playsinline>
+                <source src="./static/videos/bonsai_video_comp3.mp4" type="video/mp4">
+              </video>
+            </div>
+            <div class="item item-counter">
+              <video poster="" id="counter" autoplay controls muted loop playsinline>
+                <source src="./static/videos/counter_video_comp3.mp4" type="video/mp4">
+              </video>
+            </div>
+            <div class="item item-kitchen">
+              <video poster="" id="kitchen" autoplay controls muted loop playsinline>
+                <source src="./static/videos/kitchen_video_comp3.mp4" type="video/mp4">
+              </video>
+            </div>
+            <div class="item item-train">
+              <video poster="" id="train" autoplay controls muted loop playsinline>
+                <source src="./static/videos/train_video_comp3.mp4" type="video/mp4">
+              </video>
+            </div>
+            <div class="item item-truck">
+              <video poster="" id="truck" autoplay controls muted loop playsinline>
+                <source src="./static/videos/truck_video_comp3.mp4" type="video/mp4">
+              </video>
+            </div>
+            <div class="item item-stump">
+              <video poster="" id="stump" autoplay controls muted loop playsinline>
+                <source src="./static/videos/stump_video_comp3.mp4" type="video/mp4">
+              </video>
+            </div>
+          </div>
+   -->
+          <!-- Right arrow stays fixed -->
+          <button class="nav-arrow right" onclick="slide(1)">›</button>
+        </div>
 
+      </div>
+    </div>
+  </section>
 
     <section class="section" id="BibTeX">
         <div class="container is-max-desktop content">
