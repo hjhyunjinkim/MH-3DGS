@@ -7,12 +7,8 @@
 </p>
 
 <p align="center">
-  <a href="https://arxiv.org/abs/">
-    <img src="https://img.shields.io/badge/arXiv--b31b1b.svg"/>
-  </a>
-  <a href="https://hjhyunjinkim.github.io/MH-3DGS">
-    <img src="https://img.shields.io/badge/Project-Page-blue" />
-  </a>
+  <a href="https://arxiv.org/abs/"><img src="https://img.shields.io/badge/arxiv--b31b1b"></a>
+  <a href="https://hjhyunjinkim.github.io/MH-3DGS/"><img src="https://img.shields.io/badge/Project%20Page-MH3DGS-blue"></a> 
 </p>
 
 ### Code: Coming Soon!
