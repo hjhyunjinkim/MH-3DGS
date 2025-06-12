@@ -46,13 +46,101 @@
             }
         }
     </style>
-
+    
     <script>
+        // Object to track the state of each carousel to prevent multiple clicks during animation
+        const carouselStates = {};
+
+        /**
+         * Initializes a carousel for infinite looping.
+         * It clones the first and last items and places them at the opposite ends
+         * to create a seamless looping effect.
+         * @param {string} id The ID of the carousel element.
+         */
+        function initInfiniteCarousel(id) {
+            const el = document.getElementById(id);
+            if (!el) return;
+
+            const items = Array.from(el.querySelectorAll('.item'));
+            if (items.length <= 1) return; // No need to loop if there's only one item
+
+            // Clone the first and last items
+            const firstClone = items[0].cloneNode(true);
+            const lastClone = items[items.length - 1].cloneNode(true);
+
+            // Append the first item's clone to the end
+            el.appendChild(firstClone);
+            // Prepend the last item's clone to the beginning
+            el.insertBefore(lastClone, items[0]);
+
+            // Silently jump to the real first item's position so the user doesn't see the clones initially
+            const itemWidth = items[0].offsetWidth;
+            el.scrollTo({
+                left: itemWidth,
+                behavior: 'instant'
+            });
+        }
+
+        /**
+         * Slides the carousel in a given direction.
+         * Handles the infinite loop by jumping back to the real items after scrolling to a clone.
+         * @param {number} dir Direction to scroll (-1 for left, 1 for right).
+         * @param {string} id The ID of the carousel element.
+         */
         function slide(dir, id) {
             const el = document.getElementById(id);
-            el.scrollBy({ left: dir * el.clientWidth, behavior: 'smooth' });
+            if (!el || (carouselStates[id] && carouselStates[id].isTransitioning)) {
+                return; // Do nothing if carousel is already moving
+            }
+
+            if (!carouselStates[id]) {
+                carouselStates[id] = { isTransitioning: false };
+            }
+            carouselStates[id].isTransitioning = true;
+
+            const itemWidth = el.clientWidth; // Use the container's width for the scroll distance
+            
+            // Trigger the smooth scroll animation
+            el.scrollBy({
+                left: dir * itemWidth,
+                behavior: 'smooth'
+            });
+
+            // After the scroll animation ends, check if we need to jump to a real slide
+            const handleScrollEnd = () => {
+                const allItems = el.querySelectorAll('.item');
+                const realItemCount = allItems.length - 2;
+                const scrollLeft = el.scrollLeft;
+                
+                // Using a small tolerance for scrollLeft comparison due to potential floating point inaccuracies
+                const tolerance = 1;
+
+                // Check if we've scrolled to the clone at the end
+                if (scrollLeft >= (realItemCount + 1) * itemWidth - tolerance) {
+                    // Jump back to the real first item without animation
+                    el.scrollTo({ left: itemWidth, behavior: 'instant' });
+                }
+                // Check if we've scrolled to the clone at the beginning
+                else if (scrollLeft <= tolerance) {
+                    // Jump back to the real last item without animation
+                    el.scrollTo({ left: realItemCount * itemWidth, behavior: 'instant' });
+                }
+
+                // Allow the next click
+                carouselStates[id].isTransitioning = false;
+            };
+            
+            // The 'scrollend' event fires when the smooth scroll is complete.
+            el.addEventListener('scrollend', handleScrollEnd, { once: true });
         }
+
+        // Initialize all carousels on the page after everything has loaded
+        window.addEventListener('load', () => {
+            initInfiniteCarousel('importance-carousel');
+            initInfiniteCarousel('sampling-carousel');
+        });
     </script>
+
 
     <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
@@ -73,8 +161,7 @@
                 <div class="columns is-centered">
                     <div class="column has-text-centered">
                         <h1 class="title is-1 publication-title">Metropolis-Hastings Sampling for 3D Gaussian Reconstruction</h1>
-                            <!-- <h1 style="font-size:1.5rem">arXiv 2025</h1> -->
-                        <div class="is-size-5 publication-authors">
+                            <div class="is-size-5 publication-authors">
                             <span class="author-block">
                                 <a href="https://hjhyunjinkim.github.io/">Hyunjin Kim<sup>1</sup></a>
                             </span>
@@ -91,16 +178,6 @@
 
                         <div class="column has-text-centered">
                             <div class="publication-links">
-                                <!-- PDF Link. -->
-                                <!-- <span class="link-block">
-                                    <a href=""
-                                        class="external-link button is-normal is-rounded is-dark">
-                                        <span class="icon">
-                                            <i class="fas fa-file-pdf"></i>
-                                        </span>
-                                        <span>Paper</span>
-                                    </a>
-                                </span> -->
                                 <span class="link-block">
                                     <a href=""
                                         class="external-link button is-normal is-rounded is-dark">
@@ -110,7 +187,6 @@
                                         <span>arXiv</span>
                                     </a>
                                 </span>
-                                <!-- Code Link. -->
                                 <span class="link-block">
                                     <a href="https://github.com/hjhyunjinkim/MH-3DGS"
                                         class="external-link button is-normal is-rounded is-dark">
@@ -131,7 +207,6 @@
 
     <section class="hero is-light is-small">
         <div class="hero-body">
-            <!-- <h2 class="title is-3 has-text-centered">TL; DR</h2> -->
             <div class="container is-max-desktop has-text-centered">
                 <h3 class="title is-5"> We introduce a reformulation of 3D Gaussian Splatting (3DGS) as a Metropolis-Hastings sampling process, replacing its heuristic-based densification with a probabilistic, adaptive mechanism.</h3>
                 <div class="hero-teaser">
@@ -167,9 +242,6 @@
             <div class="columns is-centered has-text-centered">
                 <div class="column is-four-fifths">
                     <h2 class="title is-3">Method</h2>
-                    <!-- <div class="content has-text-centered">
-                        <img src="./static/images/algorithm1.png" width="80%">
-                    </div> -->
                     <div class="content has-text-justified">
 
 
@@ -257,32 +329,7 @@
 
                                         </div>
 
-                                        <!-- <div id="example3" class="bal-container-small">
-
-                                            <div class="bal-after">
-                                                <img src="./static/images/mcmc_flowers.png">
-                                                <div class="bal-afterPosition afterLabel" style="z-index:1;">
-                                                    3DGS-MCMC [Kheradmand et al. 2024]
-                                                </div>
-                                            </div>
-
-                                            <div class="bal-before" style="width:96.4968152866242%;">
-                                                <div class="bal-before-inset" style="width: 539px;">
-                                                    <img src="./static/images/ours_flowers.png">
-                                                    <div class="bal-beforePosition beforeLabel">
-                                                        MH-3DGS (Ours)
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="bal-handle" style="left:96.4968152866242%;">
-                                                <span class=" handle-left-arrow"></span>
-                                                <span class="handle-right-arrow"></span>
-                                            </div>
-
-                                        </div> -->
-
-                                    </div>
+                                        </div>
                                 </div>
                             </div>
                         </div>
@@ -338,30 +385,7 @@
 
                                     </div>
 
-                                    <!-- <div id="example6" class="bal-container-small">
-                                        <div class="bal-after">
-                                            <img src="./static/images/mcmc_bonsai.png">
-                                            <div class="bal-afterPosition afterLabel" style="z-index:1;">
-                                                3DGS-MCMC [Kheradmand et al. 2024]
-                                            </div>
-                                        </div>
-
-                                        <div class="bal-before" style="width:96.4968152866242%;">
-                                            <div class="bal-before-inset" style="width: 539px;">
-                                                <img src="./static/images/ours_bonsai.png">
-                                                <div class="bal-beforePosition beforeLabel">
-                                                    MH-3DGS (Ours)
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="bal-handle" style="left:56.77179962894249%;">
-                                            <span class=" handle-left-arrow"></span>
-                                            <span class="handle-right-arrow"></span>
-                                        </div>
-
-                                    </div> -->
-                                </div>
+                                    </div>
                             </div>
                         </div>
 
@@ -399,12 +423,9 @@
         <hr>
       <h2 class="title is-3">Results - Importance Map to Sampling</h2>
   
-        <!-- WRAPPER holds arrows and the scrolling carousel -->
         <div class="carousel-wrapper">
-          <!-- Left arrow stays fixed -->
           <button class="nav-arrow left" onclick="slide(-1, 'importance-carousel')">‹</button>
   
-          <!-- Scrollable carousel -->
           <div id="importance-carousel" class="results-carousel">
             <div class="item item-room">
               <video poster="" id="room" autoplay controls muted loop playsinline>
@@ -416,45 +437,17 @@
                 <source src="./static/videos/importance_garden_horizontal.mp4" type="video/mp4">
               </video>
             </div>
-            <!-- <div class="item item-bicycle">
-              <video poster="" id="bicycle" autoplay controls muted loop playsinline>
-                <source src="./static/videos/bicycle_video_comp3.mp4" type="video/mp4">
+            <div class="item item-drjohnson">
+              <video poster="" id="drjohnson" autoplay controls muted loop playsinline>
+                <source src="./static/videos/importance_drjohnson_horizontal.mp4" type="video/mp4">
               </video>
             </div>
-            <div class="item item-bonsai">
-              <video poster="" id="bonsai" autoplay controls muted loop playsinline>
-                <source src="./static/videos/bonsai_video_comp3.mp4" type="video/mp4">
+            <div class="item item-treehill">
+              <video poster="" id="treehill" autoplay controls muted loop playsinline>
+                <source src="./static/videos/importance_treehill_horizontal.mp4" type="video/mp4">
               </video>
             </div>
-            <div class="item item-counter">
-              <video poster="" id="counter" autoplay controls muted loop playsinline>
-                <source src="./static/videos/counter_video_comp3.mp4" type="video/mp4">
-              </video>
-            </div>
-            <div class="item item-kitchen">
-              <video poster="" id="kitchen" autoplay controls muted loop playsinline>
-                <source src="./static/videos/kitchen_video_comp3.mp4" type="video/mp4">
-              </video>
-            </div>
-            <div class="item item-train">
-              <video poster="" id="train" autoplay controls muted loop playsinline>
-                <source src="./static/videos/train_video_comp3.mp4" type="video/mp4">
-              </video>
-            </div>
-            <div class="item item-truck">
-              <video poster="" id="truck" autoplay controls muted loop playsinline>
-                <source src="./static/videos/truck_video_comp3.mp4" type="video/mp4">
-              </video>
-            </div>
-            <div class="item item-stump">
-              <video poster="" id="stump" autoplay controls muted loop playsinline>
-                <source src="./static/videos/stump_video_comp3.mp4" type="video/mp4">
-              </video>
-            </div>
-          </div>
-   -->
-          <!-- Right arrow stays fixed -->
-          <button class="nav-arrow right" onclick="slide(1, 'importance-carousel')">›</button>
+            <button class="nav-arrow right" onclick="slide(1, 'importance-carousel')">›</button>
         </div>
 
       </div>
@@ -467,61 +460,36 @@
         <hr>
       <h2 class="title is-3">Results - Sampling Comparisons</h2>
   
-        <!-- WRAPPER holds arrows and the scrolling carousel -->
         <div class="carousel-wrapper">
-          <!-- Left arrow stays fixed -->
           <button class="nav-arrow left" onclick="slide(-1, 'sampling-carousel')">‹</button>
   
-          <!-- Scrollable carousel -->
           <div id="sampling-carousel" class="results-carousel">
-            <div class="item item-room">
-              <video poster="" id="room" autoplay controls muted loop playsinline>
+            <div class="item item-drjohnson">
+              <video poster="" id="drjohnson" autoplay controls muted loop playsinline>
                 <source src="./static/videos/sampling_drjohnson_horizontal.mp4" type="video/mp4">
               </video>
             </div>
-            <div class="item item-garden">
-              <video poster="" id="garden" autoplay controls muted loop playsinline>
+            <div class="item item-flowers">
+              <video poster="" id="flowers" autoplay controls muted loop playsinline>
                 <source src="./static/videos/sampling_flowers_horizontal.mp4" type="video/mp4">
               </video>
             </div>
-            <!-- <div class="item item-bicycle">
-              <video poster="" id="bicycle" autoplay controls muted loop playsinline>
-                <source src="./static/videos/bicycle_video_comp3.mp4" type="video/mp4">
+            <div class="item item-treehill">
+              <video poster="" id="treehill" autoplay controls muted loop playsinline>
+                <source src="./static/videos/sampling_treehill_horizontal.mp4" type="video/mp4">
               </video>
             </div>
-            <div class="item item-bonsai">
-              <video poster="" id="bonsai" autoplay controls muted loop playsinline>
-                <source src="./static/videos/bonsai_video_comp3.mp4" type="video/mp4">
+            <div class="item item-room">
+              <video poster="" id="room" autoplay controls muted loop playsinline>
+                <source src="./static/videos/sampling_room_horizontal.mp4" type="video/mp4">
               </video>
             </div>
-            <div class="item item-counter">
-              <video poster="" id="counter" autoplay controls muted loop playsinline>
-                <source src="./static/videos/counter_video_comp3.mp4" type="video/mp4">
-              </video>
-            </div>
-            <div class="item item-kitchen">
-              <video poster="" id="kitchen" autoplay controls muted loop playsinline>
-                <source src="./static/videos/kitchen_video_comp3.mp4" type="video/mp4">
-              </video>
-            </div>
-            <div class="item item-train">
-              <video poster="" id="train" autoplay controls muted loop playsinline>
-                <source src="./static/videos/train_video_comp3.mp4" type="video/mp4">
-              </video>
-            </div>
-            <div class="item item-truck">
-              <video poster="" id="truck" autoplay controls muted loop playsinline>
-                <source src="./static/videos/truck_video_comp3.mp4" type="video/mp4">
-              </video>
-            </div>
-            <div class="item item-stump">
-              <video poster="" id="stump" autoplay controls muted loop playsinline>
-                <source src="./static/videos/stump_video_comp3.mp4" type="video/mp4">
+            <div class="item item-playroom">
+              <video poster="" id="playroom" autoplay controls muted loop playsinline>
+                <source src="./static/videos/sampling_playroom_horizontal.mp4" type="video/mp4">
               </video>
             </div>
           </div>
-   -->
-          <!-- Right arrow stays fixed -->
           <button class="nav-arrow right" onclick="slide(1, 'sampling-carousel')">›</button>
         </div>
 
@@ -540,9 +508,6 @@
     <footer class="footer">
         <div class="container">
             <div class="content has-text-centered">
-                <!-- <a class="icon-link" href="">
-                    <i class="fas fa-file-pdf"></i>
-                </a> -->
                 <a class="icon-link" href="https://github.com/hjhyunjinkim/MH-3DGS"
                     class="external-link" disabled>
                     <i class="fab fa-github"></i>
