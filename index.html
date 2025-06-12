@@ -10,14 +10,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Metropolis-Hastings Sampling for 3D Gaussian Reconstruction</title>
     <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-S35CLSPTXS"></script>
+    <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-S35CLSPTXS"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
 
         gtag('config', 'G-S35CLSPTXS');
-    </script>
+    </script> -->
 
     <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
 
@@ -139,6 +139,21 @@
             initInfiniteCarousel('importance-carousel');
             initInfiniteCarousel('sampling-carousel');
         });
+
+        document.addEventListener("DOMContentLoaded", () => {
+        const carouselVideos = document.querySelectorAll("#sampling-carousel video");
+
+        carouselVideos.forEach(video => {
+        video.loop = false; // disable native looping
+
+        video.addEventListener("ended", () => {
+            setTimeout(() => {
+            video.currentTime = 0;
+            video.play();
+            }, 2000); // 2 seconds delay before replay
+        });
+        });
+    });
     </script>
 
 
@@ -464,29 +479,29 @@
           <button class="nav-arrow left" onclick="slide(-1, 'sampling-carousel')">‹</button>
   
           <div id="sampling-carousel" class="results-carousel">
-            <div class="item item-drjohnson">
-              <video poster="" id="drjohnson" autoplay controls muted loop playsinline>
-                <source src="./static/videos/sampling_drjohnson_horizontal.mp4" type="video/mp4">
+            <div class="item item-playroom">
+              <video poster="" id="playroom" autoplay muted playsinline>
+                <source src="./static/videos/sampling_playroom.mp4" type="video/mp4">
               </video>
             </div>
-            <div class="item item-flowers">
-              <video poster="" id="flowers" autoplay controls muted loop playsinline>
-                <source src="./static/videos/sampling_flowers_horizontal.mp4" type="video/mp4">
+            <div class="item item-counter">
+              <video poster="" id="counter" autoplay muted playsinline>
+                <source src="./static/videos/sampling_counter.mp4" type="video/mp4">
               </video>
             </div>
             <div class="item item-treehill">
-              <video poster="" id="treehill" autoplay controls muted loop playsinline>
-                <source src="./static/videos/sampling_treehill_horizontal.mp4" type="video/mp4">
+              <video poster="" id="treehill" autoplay muted playsinline>
+                <source src="./static/videos/sampling_treehill.mp4" type="video/mp4">
               </video>
             </div>
             <div class="item item-room">
-              <video poster="" id="room" autoplay controls muted loop playsinline>
-                <source src="./static/videos/sampling_room_horizontal.mp4" type="video/mp4">
+              <video poster="" id="room" autoplay muted playsinline>
+                <source src="./static/videos/sampling_room.mp4" type="video/mp4">
               </video>
             </div>
-            <div class="item item-playroom">
-              <video poster="" id="playroom" autoplay controls muted loop playsinline>
-                <source src="./static/videos/sampling_playroom_horizontal.mp4" type="video/mp4">
+            <div class="item item-drjohnson">
+              <video poster="" id="drjohnson" autoplay muted playsinline>
+                <source src="./static/videos/sampling_drjohnson.mp4" type="video/mp4">
               </video>
             </div>
           </div>
