@@ -7,7 +7,7 @@
 </p>
 
 <p align="center">
-  <a href="https://arxiv.org/abs/"><img src="https://img.shields.io/badge/arxiv--b31b1b"></a>
+  <a href="https://arxiv.org/abs/2506.12945"><img src="https://img.shields.io/badge/arxiv-2506.12945-b31b1b"></a>
   <a href="https://hjhyunjinkim.github.io/MH-3DGS/"><img src="https://img.shields.io/badge/Project%20Page-MH3DGS-blue"></a> 
 </p>
 
