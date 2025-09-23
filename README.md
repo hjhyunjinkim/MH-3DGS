@@ -14,3 +14,13 @@
 ### Code: Coming Soon!
 
 </div>
+
+##  Citation
+```
+@article{kim2025metropolis,
+  title={Metropolis-Hastings Sampling for 3D Gaussian Reconstruction},
+  author={Kim, Hyunjin and Jung, Haebeom and Park, Jaesik},
+  journal={arXiv preprint arXiv:2506.12945},
+  year={2025}
+}
+```
