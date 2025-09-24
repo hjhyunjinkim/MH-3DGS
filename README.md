@@ -1,5 +1,5 @@
 <div align="center">
-<h1>Metropolis-Hastings Sampling for 3D Gaussian Reconstruction (NeurIPS 2025)</h1>
+<h1>Metropolis-Hastings Sampling for 3D Gaussian Reconstruction</h1>
 
 <div>
     <a href='https://hjhyunjinkim.github.io/' target='_blank'><strong>Hyunjin Kim</strong></a><sup>1</sup>&emsp;
