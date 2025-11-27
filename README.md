@@ -9,7 +9,7 @@
 ### NeurIPS 2025
 
 <a href='https://hjhyunjinkim.github.io/'><strong>Hyunjin Kim</strong></a><sup>1</sup> · 
-<a href='https://www.linkedin.com/in/haebeom-jung-867b99212/'><strong>Haebeom Jung</strong></a><sup>2</sup> · 
+<a href='https://www.haebeom.com'><strong>Haebeom Jung</strong></a><sup>2</sup> · 
 <a href='https://jaesik.info/'><strong>Jaesik Park</strong></a><sup>2</sup>
 
 <sup>1</sup>UC San Diego · <sup>2</sup>Seoul National University
