@@ -2,6 +2,10 @@
 <h1>Metropolis-Hastings Sampling for 3D Gaussian Reconstruction</h1>
 <div align="center">
 
+<div align="center">
+<img src="assets/main.gif" width="600">
+</div>
+
 ### NeurIPS 2025
 
 <a href='https://hjhyunjinkim.github.io/'><strong>Hyunjin Kim</strong></a><sup>1</sup> · 
